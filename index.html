@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#07543b" />
+  <meta name="description" content="Chat local entre dispositivos conectados a la misma red Wi‑Fi/hotspot mediante WebRTC." />
+  <title>connection1toOne</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-mark">✦</div>
+    <div class="brand-title">connection1toOne</div>
+    <button id="installBtn" class="icon-btn" title="Instalar app" aria-label="Instalar app" hidden>⬇</button>
+  </header>
+
+  <main class="app-shell">
+    <section id="homeView" class="view active">
+      <div class="hero-card">
+        <div>
+          <div class="eyebrow">CONEXIÓN LOCAL</div>
+          <h1>connection1toOne</h1>
+          <p>Mensajes y archivos entre equipos conectados al mismo Wi‑Fi/hotspot.</p>
+        </div>
+        <div class="hero-star">✦</div>
+      </div>
+
+      <div class="menu-list">
+        <button class="menu-card" data-view="chatView">
+          <div class="menu-icon">💬</div>
+          <div class="menu-copy"><strong>Chat</strong><span>Conectar y conversar</span></div>
+          <div class="chev">›</div>
+        </button>
+        <button class="menu-card" data-view="logView">
+          <div class="menu-icon">🗂️</div>
+          <div class="menu-copy"><strong>Bitácora</strong><span>Mensajes y archivos guardados</span></div>
+          <div class="chev">›</div>
+        </button>
+        <button class="menu-card" data-view="settingsView">
+          <div class="menu-icon">⚙️</div>
+          <div class="menu-copy"><strong>Ajustes</strong><span>Nombre local y versión</span></div>
+          <div class="chev">›</div>
+        </button>
+      </div>
+    </section>
+
+    <section id="chatView" class="view">
+      <div class="section-head">
+        <button class="back-btn" data-back>‹</button>
+        <div><h2>Chat</h2><p id="connectionStatus">Sin conexión</p></div>
+      </div>
+
+      <div class="panel">
+        <div class="role-switch">
+          <button id="hostModeBtn" class="seg active">Este celular comparte Wi‑Fi</button>
+          <button id="joinModeBtn" class="seg">Soy dispositivo conectado</button>
+        </div>
+
+        <div id="hostPanel">
+          <p class="hint">Crea una invitación para Dip01, Dip02 o Dip03. En el otro equipo abre la misma app, elige “Soy dispositivo conectado” y pega el código.</p>
+          <div class="slot-grid">
+            <button class="slot-btn" data-slot="Dip01">Dip01 <span>crear conexión</span></button>
+            <button class="slot-btn" data-slot="Dip02">Dip02 <span>crear conexión</span></button>
+            <button class="slot-btn" data-slot="Dip03">Dip03 <span>crear conexión</span></button>
+          </div>
+          <label>Código de invitación</label>
+          <textarea id="offerCode" readonly placeholder="Aquí aparecerá el código"></textarea>
+          <div class="row-actions">
+            <button id="copyOfferBtn" class="btn secondary">Copiar invitación</button>
+            <button id="shareOfferBtn" class="btn secondary">Compartir</button>
+          </div>
+          <label>Respuesta del dispositivo</label>
+          <textarea id="answerCode" placeholder="Pega aquí la respuesta generada por Dip01/Dip02/Dip03"></textarea>
+          <button id="applyAnswerBtn" class="btn primary">Finalizar enlace</button>
+        </div>
+
+        <div id="joinPanel" hidden>
+          <p class="hint">Pega el código recibido del celular que comparte el Wi‑Fi. Esta app generará una respuesta para devolverle.</p>
+          <label>Código recibido</label>
+          <textarea id="joinOfferCode" placeholder="Pega aquí la invitación"></textarea>
+          <button id="createAnswerBtn" class="btn primary">Generar respuesta</button>
+          <label>Respuesta para el celular principal</label>
+          <textarea id="joinAnswerCode" readonly placeholder="Aquí aparecerá la respuesta"></textarea>
+          <div class="row-actions">
+            <button id="copyAnswerBtn" class="btn secondary">Copiar respuesta</button>
+            <button id="shareAnswerBtn" class="btn secondary">Compartir</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel chat-panel">
+        <div class="chat-topline">
+          <select id="peerSelect" aria-label="Seleccionar chat"></select>
+          <span id="peerBadge" class="status-dot">●</span>
+        </div>
+        <div id="messages" class="messages"><div class="empty">Conecta un dispositivo para comenzar.</div></div>
+        <div id="fileProgress" class="progress" hidden><div></div></div>
+        <div class="composer">
+          <input id="messageInput" type="text" maxlength="2000" placeholder="Escribe un mensaje…" />
+          <label class="attach-btn" title="Adjuntar archivo">📎<input id="fileInput" type="file" hidden /></label>
+          <button id="sendBtn" class="send-btn">➤</button>
+        </div>
+        <small>Archivos: máximo 50 MB. Se guardan en la bitácora durante 24 h salvo chats protegidos.</small>
+      </div>
+    </section>
+
+    <section id="logView" class="view">
+      <div class="section-head">
+        <button class="back-btn" data-back>‹</button>
+        <div><h2>Bitácora</h2><p>Máximo 20 chats · hasta 5 protegidos</p></div>
+      </div>
+      <div id="logList" class="log-list"></div>
+    </section>
+
+    <section id="settingsView" class="view">
+      <div class="section-head">
+        <button class="back-btn" data-back>‹</button>
+        <div><h2>Ajustes</h2><p>Preferencias de la app</p></div>
+      </div>
+      <div class="panel settings-panel">
+        <label for="localName">Nombre del celular principal</label>
+        <div class="input-counter">
+          <input id="localName" maxlength="18" value="localuser" />
+          <span id="nameCount">9/18</span>
+        </div>
+        <p class="hint">Nombre predeterminado: <strong>localuser</strong>. Los otros equipos usan Dip01, Dip02 y Dip03 y no se pueden renombrar.</p>
+        <button id="saveSettingsBtn" class="btn primary">Guardar ajustes</button>
+        <div class="about-box">
+          <div><span>Versión</span><strong>1.0.0</strong></div>
+          <div><span>Conexión</span><strong>WebRTC local</strong></div>
+          <div><span>Retención</span><strong>24 horas</strong></div>
+          <div><span>Límite archivo</span><strong>50 MB</strong></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="previewDialog" class="preview-dialog">
+    <div class="dialog-head"><strong id="previewTitle">Archivo</strong><button id="closePreview">✕</button></div>
+    <div id="previewBody"></div>
+  </dialog>
+
+  <div id="toast" class="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>

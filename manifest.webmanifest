@@ -1,0 +1,15 @@
+{
+  "name":"connection1toOne",
+  "short_name":"connection1toOne",
+  "description":"Chat local y transferencia de archivos entre dispositivos mediante WebRTC.",
+  "start_url":"./",
+  "scope":"./",
+  "display":"standalone",
+  "background_color":"#fbfbf4",
+  "theme_color":"#07543b",
+  "orientation":"portrait-primary",
+  "icons":[
+    {"src":"icons/icon-192.png","sizes":"192x192","type":"image/png"},
+    {"src":"icons/icon-512.png","sizes":"512x512","type":"image/png"}
+  ]
+}
